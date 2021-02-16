@@ -59,7 +59,6 @@ userSchema.pre('save', function(next){
         next();
     }
 
-
 })
 
 const User = mongoose.model('User', userSchema) //모델에 userSchema를 감싸는 것  (모델의 이름, 스키마)
