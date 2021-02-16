@@ -62,7 +62,6 @@ userSchema.pre('save', function(next){
 
 })
 
-
 const User = mongoose.model('User', userSchema) //모델에 userSchema를 감싸는 것  (모델의 이름, 스키마)
 
 module.exports = { User } //다른곳에도 쓸 수 있게 함 
