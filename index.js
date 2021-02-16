@@ -3,10 +3,10 @@ const app = express(); //위에서 만들어진 펑션을 통해 새로운 app�
 const port = 5000 // 사용자 지정 포트 
 const { User } = require("./models/User"); //User.js의 경로를 지정 하여 모델을 가져옴
 const bodyParser = require('body-parser');
-
+const config = require('./config/key'); //key.js를 상수로 지정한다 
 
 const mongoose = require('mongoose')
-mongoose.connect('mongodb+srv://upship:1234@cluster0.tdtsa.mongodb.net/test?retryWrites=true&w=majority', { 
+mongoose.connect(config.mongoURI, {     //key.js에 있는 내용을 가져온다
     useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false
 }).then(()=> console.log("mongoDB Connected..")) //몽고 디비 연결 성공시 콘솔 출력 
 .catch(err => console.log(err)) // 에러시 콘솔 출력 
