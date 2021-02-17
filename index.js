@@ -40,7 +40,7 @@ app.post('/register', (req, res) => {
 //로그인 기능
 app.post('/login', (req, res) => {
   //mongoDB에서 제공하는 fineOne 메소드를 이용하여 메일 주소 찾기 
-  User.findOne({email:user.email}, (err, userInfo) => {
+  User.findOne({email:req.body.email}, (err, userInfo) => {
     //등록된 메일주소가 없다면 
     if(!userInfo){
       return res.json ({
@@ -58,8 +58,6 @@ app.post('/login', (req, res) => {
         })
       }
       // 맞다면 로그인 Token 생성 
-
-
     })
   })
 })
