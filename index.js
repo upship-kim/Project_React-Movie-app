@@ -37,6 +37,33 @@ app.post('/register', (req, res) => {
 })
 
 
+//로그인 기능
+app.post('/login', (req, res) => {
+  //mongoDB에서 제공하는 fineOne 메소드를 이용하여 메일 주소 찾기 
+  User.findOne({email:user.email}, (err, userInfo) => {
+    //등록된 메일주소가 없다면 
+    if(!userInfo){
+      return res.json ({
+        success : false, 
+        message : "등록된 메일주소가 없습니다"
+      })
+    } 
+
+    //등록된 메일주소가 있다면 비밀번호도 맞는지 체크 
+    user.checkPassword(req.password, (err, isMatch) =>{
+      if(!isMatch) {
+        return res.json({
+          success : false, 
+          message : "비밀번호가 틀립니다."
+        })
+      }
+      // 맞다면 로그인 Token 생성 
+
+
+    })
+  })
+})
+
 
 
 app.listen(port, () => {    //5000번 port 에서 이 어플케이션을 실행 하는 것 

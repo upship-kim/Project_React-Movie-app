@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const bcriypt = require('bcrypt');
+const bcrypt = require('bcrypt');
+const { ReplSet } = require('mongodb');
 const saltRounds = 10; 
 
 
@@ -44,11 +45,11 @@ userSchema.pre('save', function(next){
 
         
         //bcrypt 홈페이지에서 사용 코드를 가져옴 
-        bcriypt.genSalt(saltRounds, function(err, salt){
+        bcrypt.genSalt(saltRounds, function(err, salt){
             if(err) return next(err); //error가 발생하였을 때 next 펑션을 사용하여 err문도 함께 보낸다 
             
             //salt를 제대로 생성을 했다면 
-            bcriypt.hash(user.password, salt, function(err, hash){ //hash(plainPassword, Salt, function(err, hash)
+            bcrypt.hash(user.password, salt, function(err, hash){ //hash(plainPassword, Salt, function(err, hash)
                 if(err) return next(err);
                 
                 user.password = hash;   //plainPassword를 hash된 비밀번호로 바꿔주는 것 
@@ -60,6 +61,16 @@ userSchema.pre('save', function(next){
     }
 
 })
+
+//userSchema 내 메소드 생성
+userSchema.methods.checkPassword = function(plainPassword, callback){
+    //여기서 bcrypt 라이브러리 메소드를 사용함
+    bcrypt.compare(plainPassword, this.password, function(err, isMatch) {
+        if(err) return callback(err);
+        //비밀번호가 맞다면 err자리에 null, isMatch = true
+        callback(null, isMatch);
+    })
+}
 
 const User = mongoose.model('User', userSchema) //모델에 userSchema를 감싸는 것  (모델의 이름, 스키마)
 
