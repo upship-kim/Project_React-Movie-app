@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const { ReplSet } = require('mongodb');
 const saltRounds = 10; 
-
+const jwt = require('jsonwebtoken');
 
 const userSchema = mongoose.Schema({
     name : {
@@ -70,6 +70,24 @@ userSchema.methods.checkPassword = function(plainPassword, callback){
         //비밀번호가 맞다면 err자리에 null, isMatch = true
         callback(null, isMatch);
     })
+}
+
+//userSchema내 메소드 createToken 생성
+userSchema.methods.createToken = function(callback){
+    var user = this;
+    
+
+    // json web token 을 이용해서  token 생성하기
+    var token = jwt.sign(user._id.toHexString(), 'secretToken')  //_는 private 같은 네이밍룰이다 
+    //user._id + 'secretToken' = token 
+
+    //스키마에 위 토큰을 넣어주기
+    userSchema.token = token;
+    user.save(function(err, user){
+        if(err) return callback(err);
+        callback(null, user);
+    })
+
 }
 
 const User = mongoose.model('User', userSchema) //모델에 userSchema를 감싸는 것  (모델의 이름, 스키마)

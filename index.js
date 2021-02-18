@@ -4,6 +4,7 @@ const port = 5000 // 사용자 지정 포트
 const { User } = require("./models/User"); //User.js의 경로를 지정 하여 모델을 가져옴
 const bodyParser = require('body-parser');
 const config = require('./config/key'); //key.js를 상수로 지정한다 
+const cookieParser = require('cookie-parser');
 
 const mongoose = require('mongoose')
 mongoose.connect(config.mongoURI, {     //key.js에 있는 내용을 가져온다
@@ -18,6 +19,8 @@ app.get('/', (req, res) => {    //JavaScript ES6 표기법 (화살표 함수)
 //body-parser 의 옵션을 지정
 app.use(bodyParser.urlencoded({extended: true})); //bodyparser가 application/x-www-form-urlencoded 분석 해서 가져옴
 app.use(bodyParser.json()); //bodyparser가 application/json 을 분석해서 가져옴
+//cookie-parser를 사용 하게 끔 함 
+app.use(cookieParser());
 
 //postMan을 활용하여 데이터 흐름 확인
 app.post('/register', (req, res) => {
@@ -40,17 +43,17 @@ app.post('/register', (req, res) => {
 //로그인 기능
 app.post('/login', (req, res) => {
   //mongoDB에서 제공하는 fineOne 메소드를 이용하여 메일 주소 찾기 
-  User.findOne({email:req.body.email}, (err, userInfo) => {
+  User.findOne({email:req.body.email}, (err, user) => {
     //등록된 메일주소가 없다면 
-    if(!userInfo){
+    if(!user){
       return res.json ({
-        success : false, 
+        loginsuccess : false, 
         message : "등록된 메일주소가 없습니다"
       })
     } 
 
     //등록된 메일주소가 있다면 비밀번호도 맞는지 체크 
-    user.checkPassword(req.password, (err, isMatch) =>{
+    user.checkPassword(req.body.password, (err, isMatch) =>{
       if(!isMatch) {
         return res.json({
           success : false, 
@@ -58,6 +61,14 @@ app.post('/login', (req, res) => {
         })
       }
       // 맞다면 로그인 Token 생성 
+      // jsonWebToken 라이브러리 활용 
+      user.createToken ((err, user) => {
+        if(err) return res.status(400).send(err); //에러가있는것 
+        
+        //토큰을 저장한다. 어디에? 쿠키 or 로컬스토리지 
+        //쿠키에 설치하려면 cookie-parser 설치 필요 
+        res.cookie("x_auth", user.token).status(200).json({ loginSuccess: true, userId : user._id})
+      })
     })
   })
 })
