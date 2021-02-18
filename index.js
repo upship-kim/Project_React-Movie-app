@@ -52,25 +52,25 @@ app.post('/login', (req, res) => {
       })
     } 
 
-    //등록된 메일주소가 있다면 비밀번호도 맞는지 체크 
-    user.checkPassword(req.body.password, (err, isMatch) =>{
-      if(!isMatch) {
-        return res.json({
-          success : false, 
-          message : "비밀번호가 틀립니다."
-        })
-      }
-      // 맞다면 로그인 Token 생성 
-      // jsonWebToken 라이브러리 활용 
-      user.createToken ((err, user) => {
-        if(err) return res.status(400).send(err); //에러가있는것 
+      //등록된 메일주소가 있다면 비밀번호도 맞는지 체크 
+      user.checkPassword(req.body.password, (err, isMatch) =>{
+        if(!isMatch) {
+          return res.json({
+            success : false, 
+            message : "비밀번호가 틀립니다."
+          })
+        }
+        // 맞다면 로그인 Token 생성 
+        // jsonWebToken 라이브러리 활용 
+        user.createToken ((err, user) => {
+          if(err) return res.status(400).send(err); //에러가있는것 
         
-        //토큰을 저장한다. 어디에? 쿠키 or 로컬스토리지 
-        //쿠키에 설치하려면 cookie-parser 설치 필요 
-        res.cookie("x_auth", user.token).status(200).json({ loginSuccess: true, userId : user._id})
+          //토큰을 저장한다. 어디에? 쿠키 or 로컬스토리지 
+          //쿠키에 설치하려면 cookie-parser 설치 필요 
+          res.cookie("x_auth", user.token).status(200).json({ loginSuccess: true, userId : user._id})
+        })
       })
     })
-  })
 })
 
 
