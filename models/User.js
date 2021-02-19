@@ -82,6 +82,7 @@ userSchema.methods.createToken = function(callback){
 
     //스키마에 위 토큰을 넣어주기
     userSchema.token = token;
+
     user.save(function(err, user){
         if(err) return callback(err);
         callback(null, user);
