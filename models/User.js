@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const { ReplSet } = require('mongodb');
 const saltRounds = 10; 
 const jwt = require('jsonwebtoken');
 
@@ -62,7 +61,7 @@ userSchema.pre('save', function(next){
 
 })
 
-//userSchema 내 메소드 생성
+//userSchema 내 checkPassword 메소드 생성
 userSchema.methods.checkPassword = function(plainPassword, callback){
     //여기서 bcrypt 라이브러리 메소드를 사용함
     bcrypt.compare(plainPassword, this.password, function(err, isMatch) {
