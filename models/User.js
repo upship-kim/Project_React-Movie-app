@@ -73,19 +73,20 @@ userSchema.methods.checkPassword = function(plainPassword, callback){
 
 //userSchema내 메소드 createToken 생성
 userSchema.methods.createToken = function(callback){
-    var user = this;
+    var user = this;        //ES5 문법이니 변수를 생성해줘야함 
     
 
     // json web token 을 이용해서  token 생성하기
     var token = jwt.sign(user._id.toHexString(), 'secretToken')  //_는 private 같은 네이밍룰이다 
-    //user._id + 'secretToken' = token 
+    //user._id + 'secretToken' 해서 token을 만드는 것 
+    // 추후 토큰을 해석할때 'secretToken'을 넣으면 user._id가 나오는 것 
 
     //스키마에 위 토큰을 넣어주기
     userSchema.token = token;
 
     user.save(function(err, user){
         if(err) return callback(err);
-        callback(null, user);
+        callback(null, user);   // 해석: 콜백에 error는 null이고 user 정보만 있는 것 
     })
 
 }
