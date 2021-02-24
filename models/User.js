@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const saltRounds = 10; 
 const jwt = require('jsonwebtoken');
+const { json } = require('body-parser');
 
 const userSchema = mongoose.Schema({
     name : {
@@ -90,6 +91,23 @@ userSchema.methods.createToken = function(callback){
     })
 
 }
+
+userSchema.statics.findByToken = fucntion(token, callback){
+    var user = this;
+
+    jwt.verify(token, 'secretToken', function(err, decoded){
+        //유저 아이디를 이용해서 유저를 찾은 다음에 
+        // 클라이언트에서 가져온 token과 DB에 저장된 token이 일치하는지 확인 
+        user.fineOne({"_id": decoded, "token": token}, function(err, user){
+            //만약 에러가 있다면
+            if(err) callback(err); 
+            //만약 에러가 없다면 
+            callback(null, user);
+        })
+    });
+}
+
+
 
 const User = mongoose.model('User', userSchema) //모델에 userSchema를 감싸는 것  (모델의 이름, 스키마)
 

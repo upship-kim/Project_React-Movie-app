@@ -4,9 +4,10 @@ const port = 5000 // 사용자 지정 포트
 const { User } = require("./models/User"); //User.js의 경로를 지정 하여 모델을 가져옴
 const bodyParser = require('body-parser');
 const config = require('./config/key'); //key.js를 상수로 지정한다 
-const cookieParser = require('cookie-parser');
-
 const mongoose = require('mongoose')
+const cookieParser = require('cookie-parser');
+const { auth } = require("./middleware/auth");  //auth.js import 
+
 mongoose.connect(config.mongoURI, {     //key.js에 있는 내용을 가져온다
     useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false
 }).then(()=> console.log("mongoDB Connected..")) //몽고 디비 연결 성공시 콘솔 출력 
@@ -23,7 +24,7 @@ app.use(bodyParser.json()); //bodyparser가 application/json 을 분석해서 �
 app.use(cookieParser());
 
 //postMan을 활용하여 데이터 흐름 확인
-app.post('/register', (req, res) => {
+app.post('/api/users/register', (req, res) => {
   //회원가입에 필요한 정보들을 client 단에서 가져오면 데이터베이스에 넣어준다.
   //그러기 위해서는 User.js 에서 만들어둔 모델을 가져와야함 
   
@@ -41,7 +42,7 @@ app.post('/register', (req, res) => {
 
 
 //로그인 기능
-app.post('/login', (req, res) => {
+app.post('/api/users/login', (req, res) => {
   //mongoDB에서 제공하는 fineOne 메소드를 이용하여 메일 주소 찾기 
   User.findOne({email:req.body.email}, (err, user) => {
     //등록된 메일주소가 없다면 
@@ -73,6 +74,23 @@ app.post('/login', (req, res) => {
     })
 })
 
+
+app.get('api/users/auth', auth ,(req, res) => { //auth : middleWare 이다. 콜백function 진행 전 처리해주는 로직 
+  //middleWare인 auth가 여기까지 왔다는 것은 auth인증이 완료 되었다는 것 ! 
+  // 고로 이제 auth의 값을 response로 클라이언트 단에 보내주면 된다. => 이 정보를 토대로 페이지 내 유저의 정보를 나타낼 수 있다. 
+
+  res.status(200).json({
+    _id : req.user._id, //req는 auth에서 인증을 거쳐 넘어온 user정보이다.
+    isAdmin : req.user.role === 0? false : true, 
+    isAuth : true, 
+    email : req.user.email,
+    name : req.user.name,
+    lastname : req.user.lastname,
+    role : req.user.role,
+    image : req.user.image
+  })
+
+})
 
 
 app.listen(port, () => {    //5000번 port 에서 이 어플케이션을 실행 하는 것 
