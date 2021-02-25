@@ -8,7 +8,7 @@ let auth = (req, res, next) => {
 
     //인증 처리를 하는 곳 
     // 단계1. 클라이언트 쿠키에서 token을 가져온다 
-    let token = req.cookie.x_auth;
+    let token = req.cookies.x_auth;
 
     // 단계2. 가져온 클라이언트 token을 복호화하여 DB내에서 유저를 찾는다.
     //  그러기 위해서 userSchema 내에서 메소드를 만들어 진행한다. 
@@ -16,7 +16,7 @@ let auth = (req, res, next) => {
         //에러가 있으면 에러를 던져주고 
         if(err) throw err; 
         // 단계2-1. 유저가 없으면 인증 실패 
-        if(!user) return res.json({"isAuth":false, error: true});
+        if(!user) return res.json({ isAuth :false, error: true });
     
         // 단계2-2. 유저가 있으면 인증 완료 
         // req.token 과 req.user 를 해주는 이유는 index.js 내 auth route req파라미터에 이 값을 넣어주는 것 

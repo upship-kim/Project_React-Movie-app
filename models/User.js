@@ -27,6 +27,7 @@ const userSchema = mongoose.Schema({
         default: 0
     },
     image: String,
+
     token: {
         type: String
     },
@@ -76,14 +77,13 @@ userSchema.methods.checkPassword = function(plainPassword, callback){
 userSchema.methods.createToken = function(callback){
     var user = this;        //ES5 문법이니 변수를 생성해줘야함 
     
-
     // json web token 을 이용해서  token 생성하기
     var token = jwt.sign(user._id.toHexString(), 'secretToken')  //_는 private 같은 네이밍룰이다 
     //user._id + 'secretToken' 해서 token을 만드는 것 
     // 추후 토큰을 해석할때 'secretToken'을 넣으면 user._id가 나오는 것 
 
     //스키마에 위 토큰을 넣어주기
-    userSchema.token = token;
+    user.token = token;
 
     user.save(function(err, user){
         if(err) return callback(err);
@@ -95,16 +95,18 @@ userSchema.methods.createToken = function(callback){
 userSchema.statics.findByToken = function(token, callback){
     var user = this;
 
-    jwt.verify(token, 'secretToken', function(err, decoded){
+    jwt.verify(token, 'secretToken', function (err, decoded){
+        console.log("decoded", decoded);
         //유저 아이디를 이용해서 유저를 찾은 다음에 
         // 클라이언트에서 가져온 token과 DB에 저장된 token이 일치하는지 확인 
-        user.fineOne({"_id": decoded, "token": token}, function(err, user){
+        user.findOne({ "_id": decoded, "token": token }, (err, user) => {
             //만약 에러가 있다면
-            if(err) callback(err); 
+            if(err) return callback(err); 
             //만약 에러가 없다면 
             callback(null, user);
         })
-    });
+        
+    })
 }
 
 

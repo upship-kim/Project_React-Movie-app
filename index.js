@@ -7,6 +7,7 @@ const config = require('./config/key'); //key.js를 상수로 지정한다
 const mongoose = require('mongoose')
 const cookieParser = require('cookie-parser');
 const { auth } = require("./middleware/auth");  //auth.js import 
+const { json } = require('body-parser');
 
 mongoose.connect(config.mongoURI, {     //key.js에 있는 내용을 가져온다
     useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false
@@ -34,7 +35,7 @@ app.post('/api/users/register', (req, res) => {
   //User.js내 몽고db 메소드를 이용 하여 데이터베이스에 저장
   user.save((err, userInfo) => {
     if(err) return res.json({ success : false, err})  //에러가 발생할 시, success : false를 전달하고 err메시지도 함께 전달
-    return res.status(200).json({ //성공 시 (status 200 이 성공할 떄임 ) 제이슨 형식으로 success true를 반환
+    return res.status(200).send({ //성공 시 (status 200 이 성공할 떄임 ) 제이슨 형식으로 success true를 반환
       success: true
     })
   })
@@ -75,7 +76,7 @@ app.post('/api/users/login', (req, res) => {
 })
 
 
-app.get('api/users/auth', auth ,(req, res) => { //auth : middleWare 이다. 콜백function 진행 전 처리해주는 로직 
+app.get('/api/users/auth', auth ,(req, res) => { //auth : middleWare 이다. 콜백function 진행 전 처리해주는 로직 
   //middleWare인 auth가 여기까지 왔다는 것은 auth인증이 완료 되었다는 것 ! 
   // 고로 이제 auth의 값을 response로 클라이언트 단에 보내주면 된다. => 이 정보를 토대로 페이지 내 유저의 정보를 나타낼 수 있다. 
 
@@ -88,6 +89,24 @@ app.get('api/users/auth', auth ,(req, res) => { //auth : middleWare 이다. 콜�
     lastname : req.user.lastname,
     role : req.user.role,
     image : req.user.image
+  })
+
+})
+
+//로그아웃 기능 구현
+app.get('/api/users/logout', auth, (req, res) => {
+  console.log('req.user', req.user);
+  //찾고자 하는 유저의 데이터베이스에서 token지우기
+  User.findOneAndUpdate({ _id : req.user._id },  //첫번째 파라미터 : 찾는 값, 두번째 파라미터: 변경할 값, 세번째 파라미터: 콜백함수 
+    { token : "" },
+    (err, user) => {
+    //만약 에러가 났다면
+    if(err) return res.json({
+      success : false, err
+    }); 
+    return res.status(200).send({
+      success : true
+    })
   })
 
 })
