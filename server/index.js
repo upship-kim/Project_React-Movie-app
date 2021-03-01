@@ -1,12 +1,12 @@
 const express = require('express');  //express 모듈을 가져오는 것(import) 
 const app = express(); //위에서 만들어진 펑션을 통해 새로운 app을 만듦
 const port = 5000 // 사용자 지정 포트 
-const { User } = require("./server/models/User"); //User.js의 경로를 지정 하여 모델을 가져옴
+const { User } = require("./models/User"); //User.js의 경로를 지정 하여 모델을 가져옴
 const bodyParser = require('body-parser');
-const config = require('./server/config/key'); //key.js를 상수로 지정한다 
+const config = require('./config/key'); //key.js를 상수로 지정한다 
 const mongoose = require('mongoose')
 const cookieParser = require('cookie-parser');
-const { auth } = require("./server/middleware/auth");  //auth.js import 
+const { auth } = require("./middleware/auth");  //auth.js import 
 const { json } = require('body-parser');
 
 mongoose.connect(config.mongoURI, {     //key.js에 있는 내용을 가져온다
@@ -16,6 +16,11 @@ mongoose.connect(config.mongoURI, {     //key.js에 있는 내용을 가져온�
 
 app.get('/', (req, res) => {    //JavaScript ES6 표기법 (화살표 함수) 
   res.send('Hello World! 뚱이 안녕 !')  
+})
+
+// client에서 request 보낸 라우드 테스팅 
+app.get('/api/hello',(req, res) => {
+  res.send("axios success!") 
 })
 
 //body-parser 의 옵션을 지정
