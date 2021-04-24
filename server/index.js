@@ -23,6 +23,7 @@ app.get('/api/hello',(req, res) => {
   res.send("axios success!") 
 })
 
+
 //body-parser 의 옵션을 지정
 app.use(bodyParser.urlencoded({extended: true})); //bodyparser가 application/x-www-form-urlencoded 분석 해서 가져옴
 app.use(bodyParser.json()); //bodyparser가 application/json 을 분석해서 가져옴
