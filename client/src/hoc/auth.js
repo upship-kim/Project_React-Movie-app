@@ -1,7 +1,9 @@
 import React, {useEffect} from 'react';
 import {useDispatch} from 'react-redux';
+import {withRouter} from 'react-router';
 import {auth} from '../_actions/user_action';
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default function (SpaciaificComponent, option, adminRoute = null) {
     // spaciaificComponent : page component
     // option : null => 아무나 출입이 가능한 페이지 / true => 로그인한 유저만 출입이 가능한 페이지 /  false => 로그인한 유저는 출입 불가
@@ -33,7 +35,7 @@ export default function (SpaciaificComponent, option, adminRoute = null) {
             });
         }, []);
 
-        return <SpaciaificComponent />;
+        return <SpaciaificComponent {...props} />;
     }
 
     return AuthenticationCheck;
