@@ -9,16 +9,19 @@ import {Row} from 'antd';
 function LandingPage() {
     const [movies, setMovies] = useState([]);
     const [mainMovieImg, setMainMovieImg] = useState(null);
-    const [pageNum, setPageNum] = useState(1);
+    const [pageNum, setPageNum] = useState(0);
 
-    const endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=ko-KR&page=${pageNum}`;
+    const endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=ko-KR&page=1`;
 
     const fetchMovies = (endpoint) => {
         fetch(endpoint)
             .then((response) => response.json())
             .then((response) => {
-                setMovies(response.results);
-                setMainMovieImg(response.results[0]);
+                if (response.page === 1) {
+                    setMainMovieImg(response.results[0]);
+                }
+                setMovies([...movies, ...response.results]);
+
                 setPageNum(response.page);
             });
     };
@@ -33,13 +36,12 @@ function LandingPage() {
         const endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=ko-KR&page=${
             pageNum + 1
         }`;
-        // setPageNum(pageNum + 1);
         fetchMovies(endpoint);
     };
 
     return (
         <div style={{width: '100%', margin: '0'}}>
-            {mainMovieImg && (
+            {movies && mainMovieImg && (
                 <MainImage
                     img={mainMovieImg.backdrop_path}
                     title={mainMovieImg.title}
@@ -75,4 +77,4 @@ function LandingPage() {
     );
 }
 
-export default withRouter(LandingPage);
+export default React.memo(withRouter(LandingPage));
