@@ -30,6 +30,14 @@ const MovieActor = ({match, view}) => {
         <>
             <div>
                 <h2>Movie Cast</h2>
+                <button
+                    ref={ref}
+                    style={{
+                        background: 'white',
+                        border: '0px white solid',
+                        cursor: 'none',
+                    }}
+                />
                 <hr />
                 {/* movies Grid Cards */}
                 <Row gutter={[16, 16]}>
@@ -47,7 +55,6 @@ const MovieActor = ({match, view}) => {
                             </React.Fragment>
                         ))}
                 </Row>
-                <input type="text" ref={ref} />
             </div>
         </>
     );
