@@ -33,12 +33,11 @@ const MovieActor = ({match}) => {
                             <React.Fragment key={index}>
                                 <GridCards
                                     image={
-                                        credit.poster_path
+                                        credit.profile_path
                                             ? `${IMAGE_BASE_URL}w500${credit.profile_path}`
                                             : null
                                     }
-                                    movieId={null}
-                                    movieName={null}
+                                    cursor={false}
                                 />
                             </React.Fragment>
                         ))}

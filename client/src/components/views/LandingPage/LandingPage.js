@@ -65,6 +65,7 @@ function LandingPage() {
                                     }
                                     movieId={movie.id}
                                     movieName={movie.title}
+                                    cursor={true}
                                 />
                             </React.Fragment>
                         ))}

@@ -50,11 +50,11 @@ const MovieDetail = ({match}) => {
                         margin: '2rem',
                     }}
                 >
-                    <div>
-                        <button onClick={onClick}>Toggle Actor View</button>
-                    </div>
-                    <div>{view && <MovieActor />}</div>
+                    <button onClick={onClick}>Toggle Actor View</button>
                 </div>
+
+                <br />
+                {view && <MovieActor />}
             </div>
         </div>
     );
