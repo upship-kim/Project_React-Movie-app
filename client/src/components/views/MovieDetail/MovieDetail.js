@@ -1,10 +1,15 @@
-import React, {useEffect, useState} from 'react';
+import {Row} from 'antd';
+import React, {useCallback, useEffect, useState} from 'react';
 import {API_KEY, API_URL, IMAGE_BASE_URL} from '../../../Config';
+import GridCards from '../commons/GridCards';
 import MainImage from '../LandingPage/Sections/MainImage';
+import MovieActor from './Sections/MovieActor';
 import MovieInfo from './Sections/MovieInfo';
 
 const MovieDetail = ({match}) => {
     const [movieInfo, setMovieInfo] = useState([]);
+    const [view, setView] = useState(false);
+
     let movieId = match.params.movieId;
 
     useEffect(() => {
@@ -17,6 +22,10 @@ const MovieDetail = ({match}) => {
                 console.log(response);
             });
     }, []);
+
+    const onClick = () => {
+        setView(!view);
+    };
 
     return (
         <div>
@@ -41,7 +50,10 @@ const MovieDetail = ({match}) => {
                         margin: '2rem',
                     }}
                 >
-                    <button>Toggle Actor View</button>
+                    <div>
+                        <button onClick={onClick}>Toggle Actor View</button>
+                    </div>
+                    <div>{view && <MovieActor />}</div>
                 </div>
             </div>
         </div>
