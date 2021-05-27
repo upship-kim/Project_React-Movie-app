@@ -10,8 +10,8 @@ import Auth from './hoc/auth';
 function App() {
     return (
         <>
-            <NavBar />
             <Router>
+                <NavBar />
                 <div>
                     <hr />
 

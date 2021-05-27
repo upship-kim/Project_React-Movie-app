@@ -1,4 +1,5 @@
 import React, {useEffect, useRef, createRef, useState} from 'react';
+import {Route} from 'react-router';
 import {API_KEY, API_URL} from '../../../Config';
 import MainImage from '../LandingPage/Sections/MainImage';
 import MovieActor from './Sections/MovieActor';

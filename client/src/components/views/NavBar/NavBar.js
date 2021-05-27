@@ -1,8 +1,9 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 function NavBar() {
     return (
         <div>
-            <span>navBar</span>
+            <Link to={'/'}>navBar</Link>
         </div>
     );
 }
