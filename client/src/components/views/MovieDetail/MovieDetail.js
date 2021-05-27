@@ -1,7 +1,5 @@
-import {Row} from 'antd';
-import React, {useCallback, useEffect, useState} from 'react';
-import {API_KEY, API_URL, IMAGE_BASE_URL} from '../../../Config';
-import GridCards from '../commons/GridCards';
+import React, {useEffect, useRef, createRef, useState} from 'react';
+import {API_KEY, API_URL} from '../../../Config';
 import MainImage from '../LandingPage/Sections/MainImage';
 import MovieActor from './Sections/MovieActor';
 import MovieInfo from './Sections/MovieInfo';
@@ -54,7 +52,7 @@ const MovieDetail = ({match}) => {
                 </div>
 
                 <br />
-                {view && <MovieActor />}
+                {view && <MovieActor view={view} />}
             </div>
         </div>
     );

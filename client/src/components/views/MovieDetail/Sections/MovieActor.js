@@ -1,11 +1,12 @@
 import {Row} from 'antd';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {withRouter} from 'react-router';
 import {API_KEY, API_URL, IMAGE_BASE_URL} from '../../../../Config';
 import GridCards from '../../commons/GridCards';
 
-const MovieActor = ({match}) => {
+const MovieActor = ({match, view}) => {
     const [credits, setCredits] = useState();
+    const ref = useRef(null);
 
     let movieId = match.params.movieId;
 
@@ -19,13 +20,17 @@ const MovieActor = ({match}) => {
         }
         fn();
     }, []);
+    useEffect(() => {
+        if (view) {
+            ref.current.focus();
+        }
+    }, [view]);
 
     return (
         <>
             <div>
                 <h2>Movie Cast</h2>
                 <hr />
-
                 {/* movies Grid Cards */}
                 <Row gutter={[16, 16]}>
                     {credits &&
@@ -42,9 +47,9 @@ const MovieActor = ({match}) => {
                             </React.Fragment>
                         ))}
                 </Row>
+                <input type="text" ref={ref} />
             </div>
         </>
     );
 };
-
 export default withRouter(MovieActor);
