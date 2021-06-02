@@ -36,8 +36,12 @@ const MovieDetail = ({match}) => {
                 />
             )}
 
-            {/* header */}
+            {/* body */}
             <div style={{width: '85%', margin: '1rem auto'}}>
+                <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+                    <button>favorite</button>
+                </div>
+
                 {/* movie info */}
                 <br />
                 <MovieInfo info={movieInfo} />
