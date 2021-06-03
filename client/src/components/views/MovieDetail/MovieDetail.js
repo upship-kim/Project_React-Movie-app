@@ -2,6 +2,7 @@ import React, {useEffect, useRef, createRef, useState} from 'react';
 import {Route} from 'react-router';
 import {API_KEY, API_URL} from '../../../Config';
 import MainImage from '../LandingPage/Sections/MainImage';
+
 import MovieActor from './Sections/MovieActor';
 import MovieInfo from './Sections/MovieInfo';
 
@@ -38,9 +39,9 @@ const MovieDetail = ({match}) => {
 
             {/* body */}
             <div style={{width: '85%', margin: '1rem auto'}}>
-                <div style={{display: 'flex', justifyContent: 'flex-end'}}>
-                    <button>favorite</button>
-                </div>
+                <div
+                    style={{display: 'flex', justifyContent: 'flex-end'}}
+                ></div>
 
                 {/* movie info */}
                 <br />

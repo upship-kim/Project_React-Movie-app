@@ -1,0 +1,52 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Users\tkdqo\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add body-parser
+
+PATH: 
+  C:\app\tkdqo\product\11.2.0\dbhome_1\bin;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\ProgramData\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Java\jdk1.8.0_144\bin;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\Program Files\Git LFS;C:\Program Files\Java\jdk1.8.0_144\bin;C:\Users\tkdqo\AppData\Local\Microsoft\WindowsApps;C:\Users\tkdqo\AppData\Local\GitHubDesktop\bin;C:\Users\tkdqo\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\tkdqo\AppData\Roaming\npm
+
+Yarn version: 
+  1.22.10
+
+Node version: 
+  14.15.4
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: EPERM: operation not permitted, unlink 'C:\Sangbae\reactProject\movie-app\node_modules\bcrypt\lib\binding\napi-v3\bcrypt_lib.node'
+
+npm manifest: 
+  {
+    "name": "boiler-plate",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+      "start": "node server/index.js",
+      "backend": "nodemon server/index.js",
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "dev": "concurrently \"npm run backend\" \"npm run start --prefix client\" "
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+      "bcrypt": "^5.0.0",
+      "body-parser": "^1.19.0",
+      "concurrently": "^6.0.0",
+      "cookie-parser": "^1.4.5",
+      "express": "^4.17.1",
+      "jsonwebtoken": "^8.5.1",
+      "mongodb": "^3.6.2",
+      "mongoose": "^5.11.15"
+    },
+    "devDependencies": {
+      "nodemon": "^2.0.7"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
