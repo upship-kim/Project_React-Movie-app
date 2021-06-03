@@ -12,7 +12,13 @@ function App() {
         <>
             <Router>
                 <NavBar />
-                <div>
+                <div
+                    style={{
+                        marginTop: '1rem',
+                        position: 'absolute',
+                        width: '100%',
+                    }}
+                >
                     <hr />
 
                     <Switch>
